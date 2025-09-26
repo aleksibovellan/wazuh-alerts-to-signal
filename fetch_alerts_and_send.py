@@ -7,7 +7,7 @@ GROUP_GENERAL = "sg/RLEuR+XVrVAu1pGPFvebbOKzTxXigD1Dn6P6cKKQ="
 GROUP_PORTSCAN = "TjDAf4veRMdBFaFKbGiHnva3mnYP7TMBINdAVv2A1t4="
 GROUP_LOGIN = "UaBtwaJWvkEWEKEbG16Qm99I4oyQPc/mpua40nJ3rv0="
 
-# Elasticsearch API auth (Basic Auth) <-- Replace with your actual username/password if different
+# Elasticsearch API auth (Basic Auth) <-- Default credentials, replace with your actual username/password if different
 ES_USER = "admin"
 ES_PASS = "SecretPassword"
 
