@@ -3,15 +3,15 @@ A mechanism to automatically extract, classify, and send Wazuh alerts to dedicat
 
 ## Overview
 
-This system parses and classifies Wazuh alert JSONs into 3 alert categories, and then sends them into their relevant Signal chat groups automatically:
+These cron-repeated automatic scripts parse and classify Wazuh alert JSONs into 3 alert categories, and then automatically send them into their relevant Signal chat groups named:
 
 1. General Alerts
 2. Portscans
 3. Login Attempts
 
-- Automatically refreshes Wazuh API tokens to avoid time-outs
+- Automatically refreshes Wazuh API tokens to avoid token time-outs
 - Queries Wazuh alert JSONs via Elasticsearch (on Wazuh Docker stack)
-- Runs from cron every minute or can be triggered manually
+- Runs from cron every minute and/or can be triggered manually
 - Included: optional NordVPN integration with autoconnect, killswitch and LAN allow settings
 
 ### Alert Routing Logic
@@ -31,7 +31,7 @@ This system parses and classifies Wazuh alert JSONs into 3 alert categories, and
 * Ubuntu 22.04.3 LTS (or similar)
 * Python 3.10+
 * Java Runtime (for Signal-CLI)
-* Wazuh Docker deployment (with Elasticsearch API), using default port numbers, or edit them to taste in scripts. Do the same with all credentials and file paths mentioned.
+* Wazuh Docker Single Node deployment (with Elasticsearch API), using default config port numbers - or edit them to taste in these included scripts. Do the same with all credentials and file paths mentioned too.
 
 ## Install basic requirements
 
@@ -55,30 +55,30 @@ sudo ln -s /opt/signal-cli/bin/signal-cli /usr/local/bin/signal-cli
 
 1. Use browser to open Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
 2. Copy the CAPTCHA URL link from the resulted "Continue/Login" button in your browser.
-3. Paste it into below command to start phone number registration process for the Signal-CLI:
+3. Paste the resulted URL into below command to start phone number registration process for the Signal-CLI:
 
 ```bash
 signal-cli -a +44XXXXXXXXXXX register --captcha "signalcaptcha://..."
 ```
 
 4. Then check the phone number for received SMS verification code.
-5. Use the SMS verification code:
+5. Use the SMS verification code like below, and Signal-CLI should be accepted to work for that specific phone number:
 
 ```bash
 signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 ```
 
-## Signal Account Setup (Mobile App)
+## Signal Account Setup (in Mobile App)
 
 1. Install Signal on a mobile phone, and login/register the device for that Signal account, as it usually automatically guides through.
 2. Verify the phone number if needed, or otherwise - if so guided - ensure that the mobile device Signal login/registration is completed.
-3. Create 3 Signal groups named:
+3. Create 3 x Signal groups named:
 
    * Wazuh General Alerts
    * Wazuh Portscans
    * Wazuh Login Alerts
 
-> Important: The Signal mobile app must be fully registered/logged in **before** starting the next linking process (Signal-CLI & Signal mobile app), or the following QR image reading will not go through.
+> Important: The Signal mobile app must be fully registered/logged in **before** starting the next linking process between Signal-CLI and Signal mobile app, or the following QR image reading will not go through.
 
 ## Link Signal-CLI to Mobile App
 
@@ -86,7 +86,7 @@ signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 signal-cli -u +44XXXXXXXXXXX link -n "Wazuh Server"
 ```
 
-This command outputs a long URL starting with `tsdevice:/`. You can visualize that url into a QR code, in a web browser (https://www.qr-code-generator.com/), or in a terminal as an ASCII image using:
+That command outputs a long URL starting with `tsdevice:/`. You can visualize that url into a QR code, in a web browser (https://www.qr-code-generator.com/), or in a terminal as an ASCII image using:
 
 ```bash
 echo "YOUR_TSDEVICE_LINK" | qrencode -t ansiutf8
@@ -102,7 +102,7 @@ signal-cli -u +44XXXXXXXXXXX receive
 signal-cli -u +44XXXXXXXXXXX listGroups
 ```
 
-Notice and copy the group ID numbers for your groups from the shown list. Replace the group IDs in the Python script: `fetch_alerts_and_send.py`.
+Notice and copy the shown group ID numbers for your groups. Replace the group IDs in the included Python script: `fetch_alerts_and_send.py`.
 
 ## Optional: NordVPN Setup
 
@@ -113,16 +113,16 @@ sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
 sudo usermod -aG nordvpn $USER && newgrp nordvpn
 ```
 
-The NordVPN login process will print a callback URL after running the following command:
+The NordVPN login process will print an URL after running the following command:
 
 ```bash
 nordvpn login
 ```
 
-Use the URL to login into NordVPN in a browser. After successful login, the NordVPN-CLI either:
+Use a browser to visit the URL to login into NordVPN. After successful login, the NordVPN-CLI will either:
 
-1. updates itself with the accepted login information, or
-2. use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
+1. update itself with the accepted login information, or
+2. you cab use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
 
 ```bash
 nordvpn login --callback-url "https://api.nordvpn.com/..."
@@ -152,12 +152,12 @@ And if not, use 'nordvpn connect estonia', etc.
 
 We create and use a dedicated new Wazuh API user ("signalbot") to fetch alerts securely.
 
-### Create Wazuh Admin Token into memory with Wazuh API credentials
+### Create Wazuh Admin Token into memory with Wazuh admin/Indexer credentials
 
-Replace `APIuser` and `APIpassword` with your actual Wazuh admin credentials. If the second command returns user data, the token is valid and stored in memory.
+Replace `admin` and `SecretPassword` with your actual Wazuh admin/Indexer credentials. If the second command returns user data, then the token is valid and stored in memory.
 
 ```bash
-ADMIN_TOKEN=$(curl -sk -u APIuser:APIpassword -X POST https://localhost:55000/security/user/authenticate?raw=true)
+ADMIN_TOKEN=$(curl -sk -u admin:SecretPassword -X POST https://localhost:55000/security/user/authenticate?raw=true)
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/user/me | jq
 ```
 
@@ -172,21 +172,21 @@ curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
 
 ### Assign Admin Role
 
-Find role ID for `administrator`:
+Find the role ID number for Wazuh's user level of `administrator`:
 
 ```bash
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/roles | jq
 ```
 
-Assume it's ID 1.
+Usually it's ID 1.
 
-Get user ID for signalbot:
+Then get user ID for the newly created user `signalbot`:
 
 ```bash
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/users | jq
 ```
 
-Then assign role:
+Then assign administrator role to the new user `signalbot`:
 
 ```bash
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
@@ -196,11 +196,11 @@ curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
 ```
 
 ## Script Files
-Save these two scripts into your local or other desired directory, and check them for all usernames, passwords and location paths to match your setup.
+Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords and location paths to match your own setup.
 
 ### \~/refresh\_token.sh
 
-Bash script provided in the repo under `refresh_token.sh`. This refreshes the Wazuh API admin token into memory so that it doesn't suddenly expire - for the alert fetch python script to continue working automatically in the background.
+Bash script provided in the repo under `refresh_token.sh`. This script refreshes the Wazuh API admin token in memory in intervals, so that it doesn't suddenly expire and thus stop the alerts from transmitting into Signal.
 
 ### \~/fetch\_alerts\_and\_send.py
 
@@ -208,13 +208,13 @@ Python script provided in the repo under `fetch_alerts_and_send.py`. This fetche
 
 \(Uses `HTTPBasicAuth` for Elasticsearch API access and `signal-cli` subprocess call to send.\)
 
-### Permissions (check file paths)
+### Permissions (check file paths to match your setup)
 
 ```bash
 chmod +x ~/refresh_token.sh ~/fetch_alerts_and_send.py
 ```
 
-## Cron Job Setup for both scripts to work automatically (check file paths):
+## Cron Setup for both scripts to work automatically (check file paths to match your system):
 
 ```bash
 crontab -e
@@ -226,7 +226,7 @@ Add:
 * * * * * /home/user/refresh_token.sh && /usr/bin/python3 /home/user/fetch_alerts_and_send.py > /dev/null 2>&1
 ```
 
-## Manual Test
+## Manual Running & Testing
 
 ```bash
 bash ~/refresh_token.sh && python3 ~/fetch_alerts_and_send.py
