@@ -202,8 +202,9 @@ bash ./refresh_token.sh && python3 ./fetch_alerts_and_send.py
 ## Debug Tools
 
 ```bash
-signal-cli -u +44XXXXXXXXXXX listGroups
+signal-cli listAccounts
 signal-cli -u +44XXXXXXXXXXX receive
+signal-cli -u +44XXXXXXXXXXX listGroups
 ```
 
 ## Optional: NordVPN Setup
