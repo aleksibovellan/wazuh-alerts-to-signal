@@ -5,16 +5,16 @@ This is a mechanism to automatically extract, classify, and send selected types 
 
 ## Overview
 
-These two cron-repeated automated scripts parse and classify Wazuh alert JSONs into 3 x alert categories, and automatically send them into their relevant Signal chat groups named:
+These two (2) scripts are cron-repeated, and they parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, named in this project:
 
 1. General Alerts
 2. Portscans
 3. Login Attempts
 
-- Automatically refreshes Wazuh API tokens to avoid token time-outs
+- The scripts also automatically refresh Wazuh API token to avoid token time-outs
 - Queries Wazuh alert JSONs via Elasticsearch (on Wazuh Docker stack)
 - Runs from cron every minute and/or can be triggered manually
-- Included: optional NordVPN integration with autoconnect, killswitch and LAN allow settings
+- Optional guide: NordVPN integration with autoconnect, killswitch and LAN allow settings
 
 ### Alert Routing Logic
 
@@ -112,50 +112,6 @@ signal-cli -u +44XXXXXXXXXXX listGroups
 
 Notice the shown group ID numbers for your Signal alert groups. Replace the group IDs in the included Python script to your ones: `fetch_alerts_and_send.py`.
 
-## Optional: NordVPN Setup
-
-NordVPN is optional. If you want to route alerts through a VPN, install and configure as desired:
-
-```bash
-sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
-sudo usermod -aG nordvpn $USER && newgrp nordvpn
-```
-
-The NordVPN login process will print an URL after running the following command:
-
-```bash
-nordvpn login
-```
-
-Use a browser to visit the URL to login into NordVPN. After successful login, the NordVPN-CLI will either:
-
-1. update itself with the accepted login information, or
-2. you cab use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
-
-```bash
-nordvpn login --callback-url "https://api.nordvpn.com/..."
-nordvpn account
-nordvpn set technology nordlynx && \
-  nordvpn set autoconnect on && \
-  nordvpn set lan allow && \
-  nordvpn set lan-discovery enabled && \
-  nordvpn set routing enabled && \
-  nordvpn set legacy_support enabled && \
-  nordvpn set notify off
-  nordvpn set killswitch on
-
-sudo reboot
-```
-
-After reboot, VPN should be connected automatically from now on:
-
-```bash
-nordvpn status
-curl ifconfig.me
-```
-
-And if not, use 'nordvpn connect estonia', etc.
-
 ## Wazuh API User Creation
 
 We create and use a dedicated new Wazuh API user ("signalbot") to fetch alerts securely.
@@ -247,3 +203,46 @@ signal-cli -u +44XXXXXXXXXXX listGroups
 signal-cli -u +44XXXXXXXXXXX receive
 ```
 
+## Optional: NordVPN Setup
+
+NordVPN is optional. If you want to route alerts through a VPN, install and configure as desired:
+
+```bash
+sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
+sudo usermod -aG nordvpn $USER && newgrp nordvpn
+```
+
+The NordVPN login process will print an URL after running the following command:
+
+```bash
+nordvpn login
+```
+
+Use a browser to visit the URL to login into NordVPN. After successful login, the NordVPN-CLI will either:
+
+1. update itself with the accepted login information, or
+2. you cab use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
+
+```bash
+nordvpn login --callback-url "https://api.nordvpn.com/..."
+nordvpn account
+nordvpn set technology nordlynx && \
+  nordvpn set autoconnect on && \
+  nordvpn set lan allow && \
+  nordvpn set lan-discovery enabled && \
+  nordvpn set routing enabled && \
+  nordvpn set legacy_support enabled && \
+  nordvpn set notify off
+  nordvpn set killswitch on
+
+sudo reboot
+```
+
+After reboot, VPN should be connected automatically from now on:
+
+```bash
+nordvpn status
+curl ifconfig.me
+```
+
+And if not, use 'nordvpn connect estonia', etc.
