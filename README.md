@@ -5,7 +5,7 @@ This is a mechanism to automatically extract, classify, and send Wazuh alerts to
 
 ## Overview
 
-These cron-repeated automatic scripts parse and classify Wazuh alert JSONs into 3 alert categories, and then automatically send them into their relevant Signal chat groups named:
+These two cron-repeated automated scripts parse and classify Wazuh alert JSONs into 3 x alert categories, and automatically send them into their relevant Signal chat groups named:
 
 1. General Alerts
 2. Portscans
