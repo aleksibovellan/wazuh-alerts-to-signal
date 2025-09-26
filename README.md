@@ -1,5 +1,5 @@
 # Wazuh SIEM Alerts to Signal Messenger groups using Signal-CLI
-This is a mechanism to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This project was built, tested, and deployed on an Ubuntu server 22.04.5 LTS running a default Wazuh Docker Single Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/index.html).
+This is a mechanism to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This project was built, tested, and deployed on an Ubuntu server 22.04.5 LTS running a default Wazuh Docker Single Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html).
 
 ![screenshot](cover.png)
 
