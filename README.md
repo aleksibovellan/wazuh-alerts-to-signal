@@ -1,5 +1,5 @@
 # Wazuh Alerts to Signal via Signal-CLI
-A system to extract, classify, and send Wazuh alerts to dedicated Signal Messenger groups using Signal-CLI.  This setup was built, tested, and deployed on an Ubuntu server running official Wazuh Docker installation.
+A mechanism to automatically extract, classify, and send Wazuh alerts to dedicated Signal Messenger groups using Signal-CLI on Ubuntu.  This setup was built, tested, and deployed on an Ubuntu server running official Wazuh Docker installation (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
 
 ## Overview
 
@@ -9,10 +9,10 @@ This system parses and classifies Wazuh alert JSONs into 3 alert categories, and
 2. Portscans
 3. Login Attempts
 
-- Automatically refreshes Wazuh API tokens
+- Automatically refreshes Wazuh API tokens to avoid time-outs
 - Queries Wazuh alert JSONs via Elasticsearch (on Wazuh Docker stack)
 - Runs from cron every minute or can be triggered manually
-- Included: optional NordVPN integration with autoconnect and LAN allow settings
+- Included: optional NordVPN integration with autoconnect, killswitch and LAN allow settings
 
 ### Alert Routing Logic
 
@@ -33,7 +33,7 @@ This system parses and classifies Wazuh alert JSONs into 3 alert categories, and
 * Java Runtime (for Signal-CLI)
 * Wazuh Docker deployment (with Elasticsearch API), using default port numbers, or edit them to taste in scripts. Do the same with all credentials and file paths mentioned.
 
-## Signal-CLI Installation
+## Signal-CLI Installation (Ubuntu)
 
 ```bash
 sudo apt update && sudo apt install -y unzip curl jq default-jre qrencode
@@ -47,15 +47,15 @@ sudo mkdir -p /opt/signal-cli && \
 sudo ln -s /opt/signal-cli/bin/signal-cli /usr/local/bin/signal-cli
 ```
 
-1. Use Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
-2. Copy the CAPTCHA url link from the resulted "continue/login" button in your browser.
-3. Paste it into below command to start phone number register process for the Signal-CLI:
+1. Use browser to open Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
+2. Copy the CAPTCHA URL link from the resulted "Continue/Login" button in your browser.
+3. Paste it into below command to start phone number registration process for the Signal-CLI:
 
 ```bash
 signal-cli -a +44XXXXXXXXXXX register --captcha "signalcaptcha://..."
 ```
 
-4. Then check the phone number for SMS verification code.
+4. Then check the phone number for received SMS verification code.
 5. Use the SMS verification code:
 
 ```bash
@@ -64,7 +64,7 @@ signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 
 ## Signal Account Setup (Mobile App)
 
-1. Install Signal on a mobile phone, and login/register the device for that Signal account, as it automatically guides through.
+1. Install Signal on a mobile phone, and login/register the device for that Signal account, as it usually automatically guides through.
 2. Verify the phone number if needed, or otherwise - if so guided - ensure that the mobile device Signal login/registration is completed.
 3. Create 3 Signal groups named:
 
@@ -72,7 +72,7 @@ signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
    * Wazuh Portscans
    * Wazuh Login Alerts
 
-> Important: The Signal mobile app must be fully registered/logged in **before** starting the next linking process (Signal-CLI & Signal mobile app), or the following QR image reading will fail.
+> Important: The Signal mobile app must be fully registered/logged in **before** starting the next linking process (Signal-CLI & Signal mobile app), or the following QR image reading will not go through.
 
 ## Link Signal-CLI to Mobile App
 
@@ -80,15 +80,15 @@ signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 signal-cli -u +44XXXXXXXXXXX link -n "Wazuh Server"
 ```
 
-This command outputs a long URL starting with `tsdevice:/`. You can visualize that url into a QR code, in a web browser (https://www.qr-code-generator.com/), or in a terminal ASCII image using:
+This command outputs a long URL starting with `tsdevice:/`. You can visualize that url into a QR code, in a web browser (https://www.qr-code-generator.com/), or in a terminal as an ASCII image using:
 
 ```bash
 echo "YOUR_TSDEVICE_LINK" | qrencode -t ansiutf8
 ```
 
-Then, on your Signal mobile app: Settings > Linked Devices > + > Scan the QR code.
+Then, on your Signal mobile app, go to: Settings > Linked Devices > + > Scan the previous QR code.
 
-Once linked:
+Once linked successfully, check the result in Ubuntu:
 
 ```bash
 signal-cli listAccounts
@@ -96,7 +96,7 @@ signal-cli -u +44XXXXXXXXXXX receive
 signal-cli -u +44XXXXXXXXXXX listGroups
 ```
 
-Copy the group ID numbers from there. Replace the group IDs in the Python script `fetch_alerts_and_send.py`.
+Notice and copy the group ID numbers for your groups from the shown list. Replace the group IDs in the Python script: `fetch_alerts_and_send.py`.
 
 ## Optional: NordVPN Setup
 
@@ -115,8 +115,8 @@ nordvpn login
 
 Use the URL to login into NordVPN in a browser. After successful login, the NordVPN-CLI either:
 
-1. updates itself with the login information, OK, or
-2. use the browser's successful login page: copy the url for the "Continue" kind-of button, and use it in the terminal like so:
+1. updates itself with the accepted login information, or
+2. use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
 
 ```bash
 nordvpn login --callback-url "https://api.nordvpn.com/..."
@@ -133,7 +133,7 @@ nordvpn set technology nordlynx && \
 sudo reboot
 ```
 
-After reboot, VPN should be connected automatically:
+After reboot, VPN should be connected automatically from now on:
 
 ```bash
 nordvpn status
