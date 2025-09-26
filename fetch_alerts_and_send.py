@@ -1,15 +1,6 @@
 #!/usr/bin/env python3
-import requests
-import subprocess
-import json
-from requests.auth import HTTPBasicAuth
-import urllib3
-urllib3.disable_warnings()
 
-from datetime import datetime
-from collections import defaultdict
-
-# Signal CLI settings
+# Signal CLI settings (edit to match your own system, and update the group ID numbers into correct ones - read README.
 SIGNAL_CLI = "/usr/local/bin/signal-cli"
 SIGNAL_NUMBER = "+44XXXXXXXXXXX"
 GROUP_GENERAL = "sg/RLEuR+XVrVAu1pGPFvebbOKzTxXigD1Dn6P6cKKQ="
@@ -23,6 +14,16 @@ ES_PASS = "SecretPassword"
 # Elasticsearch query endpoint
 URL = "https://localhost:9200/wazuh-alerts-*/_search"
 HEADERS = {"Content-Type": "application/json"}
+
+import requests
+import subprocess
+import json
+from requests.auth import HTTPBasicAuth
+import urllib3
+urllib3.disable_warnings()
+
+from datetime import datetime
+from collections import defaultdict
 
 QUERY = {
     "query": {
