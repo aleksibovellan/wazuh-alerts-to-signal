@@ -230,9 +230,9 @@ Use a browser to visit the URL to login into NordVPN. After successful login, th
 ```bash
 nordvpn login --callback-url "https://api.nordvpn.com/..."
 nordvpn account
+
 nordvpn set technology nordlynx && \
   nordvpn set autoconnect on && \
-  nordvpn set lan allow && \
   nordvpn set lan-discovery enabled && \
   nordvpn set routing enabled && \
   nordvpn set legacy_support enabled && \
@@ -249,4 +249,4 @@ nordvpn status
 curl ifconfig.me
 ```
 
-And if not, use 'nordvpn connect estonia', etc.
+And if not, use `nordvpn connect estonia`, etc.
