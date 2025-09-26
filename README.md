@@ -38,8 +38,8 @@ First this guide prepares the Signal-CLI and Signal mobile app to work, and also
 ## Install basic requirements
 
 ```bash
+sudo apt update && sudo apt install -y openjdk-17-jre python3-pip
 pip3 install -r requirements.txt
-sudo apt install -y openjdk-17-jre
 # Check if Java is installed:
 java -version || echo "Java not found. Please install it with: sudo apt install openjdk-17-jre"
 ```
@@ -162,7 +162,8 @@ curl -sk -H "Authorization: Bearer ${ADMIN_TOKEN}" \
      -d "{\"roles\":[1]}"
 ```
 
-## Script Files
+## Save and Configure Scripts
+
 Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords and location paths to match your own setup.
 
 ### refresh\_token.sh
@@ -199,13 +200,22 @@ Add the scripts into cron, but remember to change the file paths to match your s
 bash ./refresh_token.sh && python3 ./fetch_alerts_and_send.py
 ```
 
-## Debug Tools
+## Troubleshooting & Debug Tools
 
 ```bash
 signal-cli listAccounts
 signal-cli -u +44XXXXXXXXXXX receive
 signal-cli -u +44XXXXXXXXXXX listGroups
 ```
+
+**Problem:** `signal-cli: command not found`  
+**Solution:** Check if `/usr/local/bin/signal-cli` exists. If not, re-run the symlink step.
+
+**Problem:** `Wazuh token expired`  
+**Solution:** Ensure `refresh_token.sh` is running via cron or manually.
+
+**Problem:** `Signal-CLI group ID not working`  
+**Solution:** Run `signal-cli -u +44XXXXXXXXXXX listGroups` and verify your group ID values.
 
 ## Optional: NordVPN Setup
 
