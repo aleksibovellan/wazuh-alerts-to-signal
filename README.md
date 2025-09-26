@@ -33,6 +33,12 @@ This system parses and classifies Wazuh alert JSONs into 3 alert categories, and
 * Java Runtime (for Signal-CLI)
 * Wazuh Docker deployment (with Elasticsearch API), using default port numbers, or edit them to taste in scripts. Do the same with all credentials and file paths mentioned.
 
+## Install basic requirements
+
+```bash
+pip3 install -r requirements.txt
+```
+
 ## Signal-CLI Installation (Ubuntu)
 
 ```bash
