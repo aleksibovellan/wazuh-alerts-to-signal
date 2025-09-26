@@ -47,12 +47,18 @@ sudo mkdir -p /opt/signal-cli && \
 sudo ln -s /opt/signal-cli/bin/signal-cli /usr/local/bin/signal-cli
 ```
 
-Use Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate), and copy the resulting url from the appearing "login/continue" button.
-
-Copy-paste the resulted CAPTCHA url into the following terminal command to start phone number register process for the Signal-CLI, then check the phone number for SMS verification code, and use it:
+1. Use Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
+2. Copy the CAPTCHA url link from the resulted "continue/login" button in your browser.
+3. Paste it into below command to start phone number register process for the Signal-CLI:
 
 ```bash
 signal-cli -a +44XXXXXXXXXXX register --captcha "signalcaptcha://..."
+```
+
+4. Then check the phone number for SMS verification code.
+5. Use the SMS verification code:
+
+```bash
 signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 ```
 
@@ -103,13 +109,13 @@ sudo usermod -aG nordvpn $USER && newgrp nordvpn
 nordvpn login
 
 nordvpn set technology nordlynx && \
-  nordvpn set killswitch on && \
   nordvpn set autoconnect on && \
   nordvpn set lan allow && \
   nordvpn set lan-discovery enabled && \
   nordvpn set routing enabled && \
   nordvpn set legacy_support enabled && \
   nordvpn set notify off
+  nordvpn set killswitch on
 
 sudo reboot
 ```
@@ -127,16 +133,19 @@ And if not, use 'nordvpn connect estonia', etc.
 
 We create and use a dedicated new Wazuh API user ("signalbot") to fetch alerts securely.
 
-### Create Generic Admin Token into memory with Wazuh API credentials:
+### Create Wazuh Admin Token into memory with Wazuh API credentials
+
+Replace `APIuser` and `APIpassword` with your actual Wazuh admin credentials. If the second command returns user data, the token is valid and stored in memory.
 
 ```bash
-curl -k -u APIuser:APIpassword -X POST https://localhost:55000/security/user/authenticate?raw=true
+ADMIN_TOKEN=$(curl -sk -u APIuser:APIpassword -X POST https://localhost:55000/security/user/authenticate?raw=true)
+curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/user/me | jq
 ```
 
 ### Create New User
 
 ```bash
-curl -k -H "Authorization: Bearer ADMIN_TOKEN" \
+curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
      -H "Content-Type: application/json" \
      -X POST https://localhost:55000/security/users \
      -d '{"username":"signalbot","password":"SomethingStrong!"}'
@@ -147,7 +156,7 @@ curl -k -H "Authorization: Bearer ADMIN_TOKEN" \
 Find role ID for `administrator`:
 
 ```bash
-curl -k -H "Authorization: Bearer ADMIN_TOKEN" https://localhost:55000/security/roles | jq
+curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/roles | jq
 ```
 
 Assume it's ID 1.
@@ -155,13 +164,14 @@ Assume it's ID 1.
 Get user ID for signalbot:
 
 ```bash
-curl -k -H "Authorization: Bearer ADMIN_TOKEN" https://localhost:55000/security/users | jq
+curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/users | jq
 ```
 
 Then assign role:
 
 ```bash
-curl -k -H "Authorization: Bearer ADMIN_TOKEN" \
+curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
+     -H "Content-Type: application/json" \
      -X PUT https://localhost:55000/security/users/user/3 \
      -d '{"roles":[1]}'
 ```
