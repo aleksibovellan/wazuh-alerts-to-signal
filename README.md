@@ -12,16 +12,16 @@ First this guide prepares the Signal-CLI and Signal mobile apps to work together
 3. Wazuh Login Alerts
 
 - The scripts also automatically refresh the Wazuh API token to prevent token time-outs
-- Queries Wazuh alert JSONs via Elasticsearch (on Wazuh Docker stack)
+- Queries Wazuh alert JSONs using Elasticsearch API calls
 - Runs from cron every minute and can be triggered manually (scroll further)
 - Optional guide in the end: NordVPN integration with autoconnect, killswitch and LAN allow settings
 
 ### Alert Routing Logic
 
 ```
-[Wazuh Docker] --> [Wazuh API Alert JSONs]
+[Wazuh Docker] --> [Wazuh Alert JSONs]
                                |
-                       [Python parser script]
+                       [Python parser script using Elasticsearch API calls]
                                |
                   --> Signal Group: Wazuh Alerts
                   --> Signal Group: Wazuh Portscans
