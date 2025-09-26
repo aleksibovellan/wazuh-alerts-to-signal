@@ -17,8 +17,8 @@ GROUP_PORTSCAN = "TjDAf4veRMdBFaFKbGiHnva3mnYP7TMBINdAVv2A1t4="
 GROUP_LOGIN = "UaBtwaJWvkEWEKEbG16Qm99I4oyQPc/mpua40nJ3rv0="
 
 # Elasticsearch API auth (Basic Auth) <-- Replace with your actual username/password if different
-ES_USER = "APIuser"
-ES_PASS = "APIpassword"
+ES_USER = "admin"
+ES_PASS = "SecretPassword"
 
 # Elasticsearch query endpoint
 URL = "https://localhost:9200/wazuh-alerts-*/_search"
