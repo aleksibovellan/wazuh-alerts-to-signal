@@ -5,7 +5,7 @@ This is a mechanism to automatically extract, classify, and send selected types 
 
 ## Overview
 
-First this guide prepares the Signal-CLI and Signal mobile app to work, and makes them work linked together to allow using the same phone number for both. Then the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
+First this guide prepares the Signal-CLI and Signal mobile app to work, and also makes them work as linked together to allow using the same phone number for both. Then the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
 
 1. Wazuh Alerts
 2. Wazuh Portscans
