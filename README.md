@@ -1,5 +1,5 @@
 # Wazuh Alerts to Signal via Signal-CLI
-A mechanism to automatically extract, classify, and send Wazuh alerts to dedicated Signal Messenger groups using Signal-CLI on Ubuntu.  This setup was built, tested, and deployed on an Ubuntu server running official Wazuh Docker installation (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
+A mechanism to automatically extract, classify, and send Wazuh alerts to dedicated Signal Messenger groups using Signal-CLI on Ubuntu.  This setup was built, tested, and deployed on an Ubuntu server running official Wazuh Docker Single Node installation (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
 
 ## Overview
 
