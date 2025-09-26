@@ -1,5 +1,7 @@
-# Wazuh Alerts to Signal via Signal-CLI
-A mechanism to automatically extract, classify, and send Wazuh alerts to dedicated Signal Messenger groups using Signal-CLI on Ubuntu.  This setup was built, tested, and deployed on an Ubuntu server running official Wazuh Docker Single Node installation (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
+# Wazuh SIEM Alerts to Signal Messenger groups via Signal-CLI
+A mechanism to automatically extract, classify, and send Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  This setup was built, tested, and deployed on an Ubuntu server running Wazuh Docker Single Node installation v.4.13.0. (https://documentation.wazuh.com/current/deployment-options/docker/index.html)
+
+![screenshot](cover.png)
 
 ## Overview
 
@@ -42,7 +44,7 @@ pip3 install -r requirements.txt
 ## Signal-CLI Installation (Ubuntu)
 
 ```bash
-# Download and install signal-cli (v0.13.20 Linux build)
+# Download and install signal-cli (tested with v0.13.20)
 wget https://github.com/AsamK/signal-cli/releases/download/v0.13.20/signal-cli-0.13.20.tar.gz
 
 # Extract it to /opt
@@ -59,8 +61,8 @@ sudo ln -s /opt/signal-cli/bin/signal-cli /usr/local/bin/signal-cli
 signal-cli --version
 ```
 
-1. Use browser to open Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
-2. Copy the CAPTCHA URL link from the resulted "Continue/Login" button in your browser.
+1. Use web browser to open Signal's CAPTCHA generator page, and pass the test: https://signalcaptchas.org/registration/generate
+2. Copy to clipboard the successful CAPTCHA URL link from the resulted "Continue/Login" button in your browser.
 3. Paste the resulted URL into below command to start phone number registration process for the Signal-CLI:
 
 ```bash
@@ -108,7 +110,7 @@ signal-cli -u +44XXXXXXXXXXX receive
 signal-cli -u +44XXXXXXXXXXX listGroups
 ```
 
-Notice and copy the shown group ID numbers for your groups. Replace the group IDs in the included Python script: `fetch_alerts_and_send.py`.
+Notice the shown group ID numbers for your Signal alert groups. Replace the group IDs in the included Python script to your ones: `fetch_alerts_and_send.py`.
 
 ## Optional: NordVPN Setup
 
@@ -165,9 +167,9 @@ ADMIN_TOKEN=$(curl -sk -u wazuh-wui:MyS3cr37P450r.*- -X POST https://localhost:5
 echo $ADMIN_TOKEN
 ```
 
-Replace the above mentioned default Wazuh API credentials `wazuh-wui` and `MyS3cr37P450r.*-` with your actual API credentials, if needed. (Your Wazuh credentials are listed in file location "wazuh-docker/single-node/docker-compose.yml".)
+Replace the above mentioned default Wazuh API credentials `wazuh-wui` and `MyS3cr37P450r.*-` with your actual API credentials, if needed. (Your Wazuh credentials are listed in the default Wazuh Docker location: "wazuh-docker/single-node/docker-compose.yml".)
 
-If the second command returns continuous mixed-char token data into terminal, the token is valid and stored in memory.
+If the second command returned continuous mixed-char token data into terminal, the token is valid and stored in memory.
 
 ### Create New User
 
