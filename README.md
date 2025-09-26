@@ -158,14 +158,16 @@ And if not, use 'nordvpn connect estonia', etc.
 
 We create and use a dedicated new Wazuh API user ("signalbot") to fetch alerts securely.
 
-### Create Wazuh Admin Token into memory with Wazuh API credentials
-
-Replace the credentials `wazuh-wui` and `MyS3cr37P450r.*-` with your actual Wazuh API credentials. If the second command returns continuous mixed-char token data, then the token is valid and stored in memory.
+### Create a Wazuh Admin Token into memory with your Wazuh API credentials
 
 ```bash
 ADMIN_TOKEN=$(curl -sk -u wazuh-wui:MyS3cr37P450r.*- -X POST https://localhost:55000/security/user/authenticate?raw=true)
 echo $ADMIN_TOKEN
 ```
+
+Replace the above mentioned default Wazuh API credentials `wazuh-wui` and `MyS3cr37P450r.*-` with your actual API credentials, if needed. (Your Wazuh credentials are listed in file location "wazuh-docker/single-node/docker-compose.yml".)
+
+If the second command returns continuous mixed-char token data into terminal, the token is valid and stored in memory.
 
 ### Create New User
 
@@ -178,27 +180,25 @@ curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
 
 ### Assign Admin Role
 
-Find the role ID number for Wazuh's user level of `administrator`:
+Find role ID number for Wazuh's user level of `administrator`, usually it's ID 1:
 
 ```bash
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/roles | jq
 ```
 
-Usually it's ID 1.
-
-Then get user ID for the newly created user `signalbot`:
+Then find the user ID for the newly created user `signalbot`. Usually it's ID 100:
 
 ```bash
 curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/users | jq
 ```
 
-Then assign administrator role to the new user `signalbot`:
+Replace the user ID number, and the role ID number below it, to assign Wazuh API administrator level role to that new user `signalbot`, so that it could read the Wazuh's alert JSON feed:
 
 ```bash
-curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
+curl -sk -H "Authorization: Bearer ${ADMIN_TOKEN}" \
      -H "Content-Type: application/json" \
-     -X PUT https://localhost:55000/security/users/user/3 \
-     -d '{"roles":[1]}'
+     -X PUT "${WAZUH_API}/security/users/user/100" \
+     -d "{\"roles\":[1]}"
 ```
 
 ## Script Files
