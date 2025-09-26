@@ -105,9 +105,22 @@ NordVPN is optional. If you want to route alerts through a VPN, install and conf
 ```bash
 sh <(curl -sSf https://downloads.nordcdn.com/apps/linux/install.sh)
 sudo usermod -aG nordvpn $USER && newgrp nordvpn
+```
 
+The NordVPN login process will print a callback URL after running the following command:
+
+```bash
 nordvpn login
+```
 
+Use the URL to login into NordVPN in a browser. After successful login, the NordVPN-CLI either:
+
+1. updates itself with the login information, OK, or
+2. use the browser's successful login page: copy the url for the "Continue" kind-of button, and use it in the terminal like so:
+
+```bash
+nordvpn login --callback-url "https://api.nordvpn.com/..."
+nordvpn account
 nordvpn set technology nordlynx && \
   nordvpn set autoconnect on && \
   nordvpn set lan allow && \
