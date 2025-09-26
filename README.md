@@ -5,16 +5,16 @@ This is a mechanism to automatically extract, classify, and send selected types 
 
 ## Overview
 
-These two (2) scripts are cron-repeated, and they parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, named in this project:
+First this guide prepares the Signal-CLI and Signal mobile apps to work together, and then the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are cron-repeated to continue working in the background. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
 
-1. General Alerts
-2. Portscans
-3. Login Attempts
+1. Wazuh Alerts
+2. Wazuh Portscans
+3. Wazuh Login Alerts
 
-- The scripts also automatically refresh Wazuh API token to avoid token time-outs
+- The scripts also automatically refresh the Wazuh API token to prevent token time-outs
 - Queries Wazuh alert JSONs via Elasticsearch (on Wazuh Docker stack)
-- Runs from cron every minute and/or can be triggered manually
-- Optional guide: NordVPN integration with autoconnect, killswitch and LAN allow settings
+- Runs from cron every minute and can be triggered manually (scroll further)
+- Optional guide in the end: NordVPN integration with autoconnect, killswitch and LAN allow settings
 
 ### Alert Routing Logic
 
@@ -23,9 +23,9 @@ These two (2) scripts are cron-repeated, and they parse and classify Wazuh alert
                                |
                        [Python parser script]
                                |
-                  --> Signal Group: General
-                  --> Signal Group: Port Scans
-                  --> Signal Group: Login Attempts
+                  --> Signal Group: Wazuh Alerts
+                  --> Signal Group: Wazuh Portscans
+                  --> Signal Group: Wazuh Login Alerts
 ```
 
 ## Prerequisites for this guide and scripts:
@@ -85,7 +85,7 @@ signal-cli -a +44XXXXXXXXXXX verify SMS-CODE
 2. Verify the phone number if needed, or otherwise - if so guided - ensure that the mobile device Signal login/registration is completed.
 3. Create 3 x Signal groups named:
 
-   * Wazuh General Alerts
+   * Wazuh Alerts
    * Wazuh Portscans
    * Wazuh Login Alerts
 
