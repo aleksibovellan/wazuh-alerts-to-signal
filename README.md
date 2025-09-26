@@ -42,15 +42,21 @@ pip3 install -r requirements.txt
 ## Signal-CLI Installation (Ubuntu)
 
 ```bash
-sudo apt update && sudo apt install -y unzip curl jq default-jre qrencode
+# Download and install signal-cli (v0.13.20 Linux build)
+wget https://github.com/AsamK/signal-cli/releases/download/v0.13.20/signal-cli-0.13.20.tar.gz
 
-VERSION=$(curl -s https://api.github.com/repos/AsamK/signal-cli/releases/latest | jq -r .tag_name)
-curl -LO https://github.com/AsamK/signal-cli/releases/download/$VERSION/signal-cli-$VERSION-Linux.tar.gz
-
+# Extract it to /opt
 sudo mkdir -p /opt/signal-cli && \
-  sudo tar -xzf signal-cli-$VERSION-Linux.tar.gz -C /opt/signal-cli --strip-components=1
+  sudo tar -xzf signal-cli-0.13.20.tar.gz -C /opt/signal-cli --strip-components=1
 
+# (Optional) Remove broken symlink if it exists
+sudo rm -f /usr/local/bin/signal-cli
+
+# Link it globally for CLI use
 sudo ln -s /opt/signal-cli/bin/signal-cli /usr/local/bin/signal-cli
+
+# Test
+signal-cli --version
 ```
 
 1. Use browser to open Signal's CAPTCHA generator (https://signalcaptchas.org/registration/generate).
@@ -152,13 +158,13 @@ And if not, use 'nordvpn connect estonia', etc.
 
 We create and use a dedicated new Wazuh API user ("signalbot") to fetch alerts securely.
 
-### Create Wazuh Admin Token into memory with Wazuh admin/Indexer credentials
+### Create Wazuh Admin Token into memory with Wazuh API credentials
 
-Replace `admin` and `SecretPassword` with your actual Wazuh admin/Indexer credentials. If the second command returns user data, then the token is valid and stored in memory.
+Replace the credentials `wazuh-wui` and `MyS3cr37P450r.*-` with your actual Wazuh API credentials. If the second command returns continuous mixed-char token data, then the token is valid and stored in memory.
 
 ```bash
-ADMIN_TOKEN=$(curl -sk -u admin:SecretPassword -X POST https://localhost:55000/security/user/authenticate?raw=true)
-curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" https://localhost:55000/security/user/me | jq
+ADMIN_TOKEN=$(curl -sk -u wazuh-wui:MyS3cr37P450r.*- -X POST https://localhost:55000/security/user/authenticate?raw=true)
+echo $ADMIN_TOKEN
 ```
 
 ### Create New User
