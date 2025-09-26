@@ -165,11 +165,11 @@ curl -sk -H "Authorization: Bearer ${ADMIN_TOKEN}" \
 ## Script Files
 Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords and location paths to match your own setup.
 
-### \~/refresh\_token.sh
+### refresh\_token.sh
 
 Bash script provided in the repo under `refresh_token.sh`. This script refreshes the Wazuh API admin token in memory in intervals, so that it doesn't suddenly expire and thus stop the alerts from transmitting into Signal.
 
-### \~/fetch\_alerts\_and\_send.py
+### fetch\_alerts\_and\_send.py
 
 Python script provided in the repo under `fetch_alerts_and_send.py`. This fetches the last minute of alerts, parses them, deduplicates based on similarity, and sends a single message with alert count per match.
 
@@ -178,7 +178,7 @@ Python script provided in the repo under `fetch_alerts_and_send.py`. This fetche
 ### Permissions (check file paths to match your setup)
 
 ```bash
-chmod +x ~/refresh_token.sh ~/fetch_alerts_and_send.py
+chmod +x refresh_token.sh fetch_alerts_and_send.py
 ```
 
 ## Cron Setup for both scripts to work automatically (check file paths to match your system):
@@ -187,7 +187,7 @@ chmod +x ~/refresh_token.sh ~/fetch_alerts_and_send.py
 crontab -e
 ```
 
-Add:
+Add the scripts into cron, but remember to change the file paths to match your system:
 
 ```cron
 * * * * * /home/user/refresh_token.sh && /usr/bin/python3 /home/user/fetch_alerts_and_send.py > /dev/null 2>&1
@@ -196,7 +196,7 @@ Add:
 ## Manual Running & Testing
 
 ```bash
-bash ~/refresh_token.sh && python3 ~/fetch_alerts_and_send.py
+bash ./refresh_token.sh && python3 ./fetch_alerts_and_send.py
 ```
 
 ## Debug Tools
