@@ -190,7 +190,7 @@ curl -sk -H "Authorization: Bearer $ADMIN_TOKEN" \
 ```
 
 ## Script Files
-Save these two scripts into your local or other desired directory, and check in them all usernames, passwords and location paths to match your setup.
+Save these two scripts into your local or other desired directory, and check them for all usernames, passwords and location paths to match your setup.
 
 ### \~/refresh\_token.sh
 
