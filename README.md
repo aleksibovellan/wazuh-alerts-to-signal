@@ -1,5 +1,5 @@
 # Wazuh SIEM Alerts to Signal Messenger groups via Signal-CLI
-This is a mechanism to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This setup was built, tested, and deployed on an Ubuntu server running Wazuh Docker Single Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/index.html).
+This is a mechanism to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This setup was built, tested, and deployed on an Ubuntu server 22.04.5 LTS running Wazuh Docker Single Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/index.html).
 
 ![screenshot](cover.png)
 
@@ -39,6 +39,9 @@ These two (2) scripts are cron-repeated, and they parse and classify Wazuh alert
 
 ```bash
 pip3 install -r requirements.txt
+sudo apt install -y openjdk-17-jre
+# Check if Java is installed:
+java -version || echo "Java not found. Please install it with: sudo apt install openjdk-17-jre"
 ```
 
 ## Signal-CLI Installation (Ubuntu)
@@ -110,7 +113,7 @@ signal-cli -u +44XXXXXXXXXXX receive
 signal-cli -u +44XXXXXXXXXXX listGroups
 ```
 
-Notice the shown group ID numbers for your Signal alert groups. Replace the group IDs in the included Python script to your ones: `fetch_alerts_and_send.py`.
+Notice the shown group ID numbers for your Signal alert group names. Replace the variable values "GROUP_GENERAL, GROUP_PORTSCAN, and GROUP_LOGIN" in the included file `fetch_alerts_and_send.py` with your actual group IDs.
 
 ## Wazuh API User Creation
 
@@ -221,7 +224,7 @@ nordvpn login
 Use a browser to visit the URL to login into NordVPN. After successful login, the NordVPN-CLI will either:
 
 1. update itself with the accepted login information, or
-2. you cab use the browser's successful login page, to copy the url for the "Continue" kind-of button, and use it in the terminal like so:
+2. you can use the browser's successful login page, to copy the url for the "Continue" button, and use it in the terminal like so:
 
 ```bash
 nordvpn login --callback-url "https://api.nordvpn.com/..."
