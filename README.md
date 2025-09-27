@@ -173,7 +173,7 @@ curl -sk -H "Authorization: Bearer ${ADMIN_TOKEN}" \
 
 ## Save and Configure Scripts
 
-Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords and location paths to match your own setup.
+Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords, phone numbers and file paths to match your own setup.
 
 ### refresh\_token.sh
 
