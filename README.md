@@ -38,8 +38,14 @@ First this guide prepares the Signal-CLI and Signal mobile app to work, and also
 ## Install basic requirements
 
 ```bash
-sudo apt update && sudo apt install -y openjdk-17-jre python3-pip
-pip3 install -r requirements.txt
+sudo apt update && sudo apt install -y \
+  openjdk-17-jre \
+  python3-pip \
+  unzip \
+  curl \
+  jq \
+  qrencode
+
 # Check if Java is installed:
 java -version || echo "Java not found. Please install it with: sudo apt install openjdk-17-jre"
 ```
