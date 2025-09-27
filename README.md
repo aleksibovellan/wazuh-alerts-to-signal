@@ -47,6 +47,8 @@ sudo apt update && sudo apt install -y \
   jq \
   qrencode
 
+pip3 install -r requirements.txt
+
 # Check if Java is installed:
 java -version || echo "Java not found. Please install it with: sudo apt install openjdk-17-jre"
 ```
