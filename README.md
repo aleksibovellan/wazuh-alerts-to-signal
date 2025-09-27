@@ -32,8 +32,9 @@ First this guide prepares the Signal-CLI and Signal mobile app, and also makes t
 
 * Ubuntu 22.04.3 LTS (or similar)
 * Python 3.10+
-* Java Runtime (for Signal-CLI)
-* Wazuh Docker Single-Node deployment (with Elasticsearch API), using default config port numbers - or edit them to taste in these included scripts. Do the same with all credentials and file paths mentioned too.
+* Mobile phone for Signal app + valid phone number to receive Signal's SMS verification code
+* Wazuh Docker Single-Node deployment (the default setup includes Elasticsearch API), using default config port numbers - or edit ports to taste in these included scripts. Do the same with all credentials and file paths mentioned too.
+* Java Runtime (for Signal-CLI - installed later just in case)
 
 ## Install basic requirements
 
