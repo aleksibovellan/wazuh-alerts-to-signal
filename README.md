@@ -23,9 +23,9 @@ First this guide prepares the Signal-CLI and Signal mobile app, and also makes t
                                |
                        [Python parser script using Elasticsearch API calls]
                                |
-                  --> Signal Group: Wazuh Alerts
-                  --> Signal Group: Wazuh Portscans
-                  --> Signal Group: Wazuh Login Alerts
+                  --> Signal Group: Wazuh Alerts [via Signal-CLI]
+                  --> Signal Group: Wazuh Portscans [via Signal-CLI]
+                  --> Signal Group: Wazuh Login Alerts [via Signal-CLI]
 ```
 
 ## Prerequisites for this guide and scripts:
