@@ -5,7 +5,7 @@ This is a setup to automatically extract, classify, and send selected types of W
 
 ## Overview
 
-First this guide prepares the Signal-CLI and Signal mobile app, and also makes them work linked together to allow using the same phone number for both. Then the Wazuh API backend is prepared, and finally the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background sending alerts to Signal automatically. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
+First, this guide prepares the installations of Signal-CLI and Signal mobile app, and also makes them work linked together to allow using the same phone number for both. Then the Wazuh API backend is prepared, and finally the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background sending alerts to Signal automatically. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
 
 1. Wazuh Alerts
 2. Wazuh Portscans
@@ -15,6 +15,8 @@ First this guide prepares the Signal-CLI and Signal mobile app, and also makes t
 - Queries Wazuh alert JSONs using Elasticsearch API calls
 - Runs from cron every minute and can be triggered manually (scroll further)
 - Optional guide in the end: NordVPN integration with autoconnect, killswitch and LAN allow settings
+
+NOTE: If using the same phone number for both - Signal-CLI and Signal app - the Signal group messages won't create sound alerts when received, because they are "messages from self". Using different phone numbers will enable the message sound feature. Do consider the rate of alerts though, if sound is actually desired.
 
 ### Alert Routing Logic
 
