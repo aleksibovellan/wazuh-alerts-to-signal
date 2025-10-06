@@ -175,7 +175,7 @@ curl -sk -H "Authorization: Bearer ${ADMIN_TOKEN}" \
 
 ## Save and Configure Scripts
 
-Save these included two scripts into your local or other desired directory, where they are allowed to run using cron, and check them for all mentioned usernames, passwords, phone numbers and file paths to match your own setup.
+Save these included two scripts into your local or other desired directory, where they are allowed to run using cron. Check them for all mentioned usernames, passwords, ports, phone numbers and file paths to match your own setup.
 
 ### refresh\_token.sh
 
@@ -187,19 +187,19 @@ Python script provided in the repo under `fetch_alerts_and_send.py`. This fetche
 
 \(Uses `HTTPBasicAuth` for Elasticsearch API access and `signal-cli` subprocess call to send.\)
 
-### Permissions (check file paths to match your setup)
+### Permissions
 
 ```bash
 chmod +x refresh_token.sh fetch_alerts_and_send.py
 ```
 
-## Cron Setup for both scripts to work automatically (check file paths to match your system):
+## Cron Setup for both scripts to work automatically
 
 ```bash
 crontab -e
 ```
 
-Add the scripts into cron, but remember to change the file paths to match your system:
+Add the scripts into cron:
 
 ```cron
 * * * * * /home/user/refresh_token.sh && /usr/bin/python3 /home/user/fetch_alerts_and_send.py > /dev/null 2>&1
