@@ -5,6 +5,8 @@ This is a setup to automatically extract, classify, and send selected types of W
 
 ## Overview
 
+## NEW: Version 1.1 (4th Dec 2025) - Fixes Signal link's time-expiration, using automated refresh for both directions, to keep the link alive. Also now throttles message rates a bit, creating a new file 'throttle_state.json'.
+
 First, this guide prepares the installations of Signal-CLI and Signal mobile app, and also makes them work linked together to allow using the same phone number for both. Then the Wazuh API backend is prepared, and finally the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background sending alerts to Signal automatically. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
 
 1. Wazuh Alerts
