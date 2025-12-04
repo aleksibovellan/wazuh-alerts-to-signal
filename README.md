@@ -1,5 +1,5 @@
 # Wazuh SIEM Alerts to Signal Messenger groups using Signal-CLI
-This is a setup to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This project was built, tested, and deployed on an Ubuntu server 22.04.5 LTS running a default Wazuh Docker Single-Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html).
+This is a setup to automatically extract, classify, and send selected types of Wazuh alerts to Signal Messenger groups, using Signal-CLI on Ubuntu.  Feel free to modify group names and other settings, credentials and file paths as needed. This project was built, tested, and deployed on an Ubuntu server 22.04.5 LTS running a default Wazuh Docker Single-Node installation v.4.13.0 (https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html).
 
 ![screenshot](cover.png)
 
@@ -7,7 +7,9 @@ This is a setup to automatically extract, classify, and send selected types of W
 
 ## NEW: Version 1.1 (4th Dec 2025) - Fixes Signal link's time-expiration, using automated refresh for both directions, to keep the link alive. Also now throttles message rates a bit, creating a new file 'throttle_state.json'.
 
-First, this guide prepares the installations of Signal-CLI and Signal mobile app, and also makes them work linked together to allow using the same phone number for both. Then the Wazuh API backend is prepared, and finally the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated to continue working in the background sending alerts to Signal automatically. The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
+First, this guide prepares the installations of Signal-CLI and Signal mobile app, and also makes them work linked together, to allow using the same phone number for both. Then the Wazuh API backend is prepared, and finally the included two scripts `fetch_alerts_and_send.py` and `refresh_token.sh` are made cron-repeated, to continue working in the background sending alerts to Signal automatically.
+
+The scripts parse and classify Wazuh alert JSONs into three (3) different alert categories, and automatically send them into their relevant Signal chat groups, called in this project:
 
 1. Wazuh Alerts
 2. Wazuh Portscans
@@ -16,9 +18,9 @@ First, this guide prepares the installations of Signal-CLI and Signal mobile app
 - The scripts also automatically refresh the Wazuh API token to prevent token time-outs
 - Queries Wazuh alert JSONs using Elasticsearch API calls
 - Runs from cron every minute and can be triggered manually (scroll further)
-- Optional guide in the end: NordVPN integration with autoconnect, killswitch and LAN allow settings
+- Optional guide in the end: NordVPN integration with autoconnect and LAN allow settings
 
-NOTE: If using the same phone number for both - Signal-CLI and Signal app - the Signal group messages won't create sound alerts when received, because they are "messages from self". Using different phone numbers will enable the message sound feature. Do consider the rate of alerts though, if sound is actually desired.
+NOTE: If using the same phone number for both - Signal-CLI and Signal mobile app - the Signal group messages won't create sound alerts or notifications when received, because they are "messages from self". Using different phone numbers will enable those features. Do consider the rate of alerts though, if notifications are actually desired.
 
 ### Alert Routing Logic
 
@@ -37,8 +39,8 @@ NOTE: If using the same phone number for both - Signal-CLI and Signal app - the 
 * Ubuntu 22.04.3 LTS (or similar)
 * Python 3.10+
 * Mobile phone for Signal app + valid phone number to receive Signal's SMS verification code
-* Wazuh Docker Single-Node deployment (the default setup includes Elasticsearch API), using default config port numbers - or edit ports to taste in these included scripts. Do the same with all credentials and file paths mentioned too.
-* Java Runtime (for Signal-CLI - installed later just in case)
+* Wazuh Docker Single-Node deployment (it includes Elasticsearch API) with its default port numbers - or, edit your actual ports to taste in these included scripts. Do the same with all credentials and file paths mentioned too - now they are from the default Wazuh installation.
+* Java Runtime (for Signal-CLI - installed next just in case)
 
 ## Install basic requirements
 
@@ -62,7 +64,7 @@ java -version || echo "Java not found. Please install: sudo apt install openjdk-
 ## Signal-CLI Installation (Ubuntu)
 
 ```bash
-# Download and install signal-cli (tested with v0.13.20)
+# Download and install signal-cli (tested with v0.13.20, but feel free to try others)
 wget https://github.com/AsamK/signal-cli/releases/download/v0.13.20/signal-cli-0.13.20.tar.gz
 
 # Extract it to /opt
