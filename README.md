@@ -44,17 +44,19 @@ NOTE: If using the same phone number for both - Signal-CLI and Signal app - the 
 
 ```bash
 sudo apt update && sudo apt install -y \
-  openjdk-17-jre \
+  openjdk-21-jre \
   python3-pip \
   unzip \
   curl \
   jq \
-  qrencode
+  qrencode \
+  cron
 
+# Install Python dependencies
 pip3 install -r requirements.txt
 
-# Check if Java is installed:
-java -version || echo "Java not found. Please install it with: sudo apt install openjdk-17-jre"
+# Verify Java Version (Must be 21 or higher)
+java -version || echo "Java not found. Please install: sudo apt install openjdk-21-jre"
 ```
 
 ## Signal-CLI Installation (Ubuntu)
