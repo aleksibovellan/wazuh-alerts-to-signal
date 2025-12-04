@@ -262,7 +262,7 @@ nordvpn set technology nordlynx && \
   nordvpn set routing enabled && \
   nordvpn set legacy_support enabled && \
   nordvpn set notify off
-  nordvpn set killswitch on
+  nordvpn set killswitch off
 
 sudo reboot
 ```
